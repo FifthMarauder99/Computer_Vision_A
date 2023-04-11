@@ -25,30 +25,31 @@ def _NeighbourNodeInputMessage(i_node,j_node,i_eval_label,NGraph):
         else:pass
     return MessageSum
 
-def _CalculateMessage(i_node,j_node,TotalBribes):
-    message_i_jR,message_i_jD = [],[]
+def _CalculateMessage(i_node, j_node, TotalBribes):
+    message_i_jR, message_i_jD = [], []
     
-    if  not ((abs(i_node[0] - j_node[0]) == 1 and i_node[1] == j_node[1]) or (i_node[0] == j_node[0] and abs(i_node[1] - j_node[1]) == 1)):
+    # Check if nodes are adjacent
+    if not ((abs(i_node[0] - j_node[0]) == 1 and i_node[1] == j_node[1]) or (i_node[0] == j_node[0] and abs(i_node[1] - j_node[1]) == 1)):
         raise Exception(f"The message nodes i = {i_node} to j = {j_node} broadcasted are wrong")
     
-    for i_node_label in ["R","D"]:
-        j_node_label = "R"   
-        message_i_j_data_R = DataCost(i_node,i_node_label,TotalBribes)
-        message_i_j_fence_R = message_i_j_data_R + FenceCost(i_node_label,j_node_label)
-        Final_Rcost = message_i_j_fence_R + _NeighbourNodeInputMessage(i_node,j_node,i_node_label,NGraph)
+    for i_node_label in ["R", "D"]:
+        j_node_label = "R"   # Initialize to "R" for first message calculation
+        message_i_j_data_R = DataCost(i_node, i_node_label, TotalBribes)  # Compute data cost of node i with label i_node_label
+        message_i_j_fence_R = message_i_j_data_R + FenceCost(i_node_label, j_node_label)  # Compute fence cost between nodes i and j with respective labels
+        # Compute incoming message sum from all other neighbours of node i, except for j_node, with label i_node_label
+        Final_Rcost = message_i_j_fence_R + _NeighbourNodeInputMessage(i_node, j_node, i_node_label, NGraph)  
         message_i_jR.append(Final_Rcost)
-    #print(f"calculated the messages from {i_node} to {j_node} for j = {j_node_label}\n")
-
-    for i_node_label in ["R","D"]:
-        j_node_label = "D"   
-        message_i_j_data_D = DataCost(i_node,i_node_label,TotalBribes)
-        message_i_j_fence_D = message_i_j_data_D + FenceCost(i_node_label,j_node_label)
-        Final_Dcost = message_i_j_fence_D + _NeighbourNodeInputMessage(i_node,j_node,i_node_label,NGraph)
+        
+    for i_node_label in ["R", "D"]:
+        j_node_label = "D"   # Initialize to "D" for second message calculation
+        message_i_j_data_D = DataCost(i_node, i_node_label, TotalBribes)  # Compute data cost of node i with label i_node_label
+        message_i_j_fence_D = message_i_j_data_D + FenceCost(i_node_label, j_node_label)  # Compute fence cost between nodes i and j with respective labels
+        # Compute incoming message sum from all other neighbours of node i, except for j_node, with label i_node_label
+        Final_Dcost = message_i_j_fence_D + _NeighbourNodeInputMessage(i_node, j_node, i_node_label, NGraph)
         message_i_jD.append(Final_Dcost)
-    #print(f"calculated the messages from {i_node} to {j_node} for j = {j_node_label}\n")
-    
-    #print(message_i_jR,message_i_jD)
-    return np.min(message_i_jR),np.min(message_i_jD)
+        
+    # Return the minimum values of message_i_jR and message_i_jD
+    return np.min(message_i_jR), np.min(message_i_jD)
 
 def _NeighbourNodeBelief(i_node,i_eval_label,Message_store_final):
     label = {"R":0,"D":1}
@@ -168,7 +169,7 @@ if __name__ == "__main__":
             NGraph[(i, j)] = set(((x, y), direction) for x, y, direction in NGraph[(i, j)] if 0 <= x < n and 0 <= y < n)
     
     Message_store = np.zeros((n, n, 4, 2), dtype=np.float32)
-    
+    print("Computing optimal labeling:")
     for iter_ in range(Max_Iterations):
         Message_store= MessagePropItr(n,TotalBribes)
         CurLabel = _CalculateBelief(n,Message_store)
@@ -188,5 +189,5 @@ if __name__ == "__main__":
     Message_store_final = min_label[1].copy()
     FinalLabel =_CalculateBelief(n,Message_store_final)
     FinalCost = _CurLabelMapCost(FinalLabel)
-    print(FinalLabel)
-    print(FinalCost)
+    print("\n".join(" ".join(row) for row in FinalLabel))
+    print("Total cost =", FinalCost)

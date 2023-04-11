@@ -98,6 +98,43 @@ def MessagePropItr(n,TotalBribes):
 -   The message storing is done in a n x n matrix that has 4 cells each denoting a neighboring direction and each 4 direction stores 2 values w.r.t message as label = "R" or "D". once the message is calculated it also does normalization of the mseeage matrix using log normalization.
 -   
 
-### _CalculateBelief
+### _CalculateMessage
 
--    This function implements the
+-    This function implements the message value to be sent from i to jth node. A direct implementation of the message propagation function 
+
+```sh
+
+for i_node_label in ["R","D"]:
+        j_node_label = "R"   
+        message_i_j_data_R = DataCost(i_node,i_node_label,TotalBribes) # Data cost implementation 
+        message_i_j_fence_R = message_i_j_data_R + FenceCost(i_node_label,j_node_label) # Fence cost implementation
+        Final_Rcost = message_i_j_fence_R + _NeighbourNodeInputMessage(i_node,j_node,i_node_label,NGraph)   # Neighbourhood sum implementation
+        message_i_jR.append(Final_Rcost)
+
+for i_node_label in ["R","D"]:
+        j_node_label = "D"   
+        message_i_j_data_D = DataCost(i_node,i_node_label,TotalBribes)
+        message_i_j_fence_D = message_i_j_data_D + FenceCost(i_node_label,j_node_label)
+        Final_Dcost = message_i_j_fence_D + _NeighbourNodeInputMessage(i_node,j_node,i_node_label,NGraph)
+        message_i_jD.append(Final_Dcost)
+
+return np.min(message_i_jR),np.min(message_i_jD)
+
+```
+
+### _NeighbourNodeInputMessage
+
+-   This function calculates the message inputs from the surrounding neighbours excluding the oneto which the message is being sent using a adjacency graph Ngraph.
+
+```sh
+def _NeighbourNodeInputMessage(i_node,j_node,i_eval_label,NGraph):
+    direction ={"RIGHT":0,"LEFT":1,"DOWN":2,"UP":3}
+    label = {"R":0,"D":1}
+    MessageSum = 0
+    for neighbour_node in NGraph[i_node]:
+        if j_node not in neighbour_node:
+            MessageSum += Message_store[i_node[0]][i_node[1]][direction[neighbour_node[1]]][label[i_eval_label]]
+        else:pass
+    return MessageSum
+
+```
