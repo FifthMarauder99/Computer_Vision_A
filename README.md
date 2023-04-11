@@ -15,3 +15,7 @@ We have an animate_above function in which we create the animation, we control a
 - For all the next traversals, we need to vary the Translations, tx, ty and tz. One very easy way to do this is to vary the tx,ty and tz accordint to the current frame_number. This allows us to control the point to point position of the plane.
 - We use the compass variable to turn the plane right or left. The turn does not work if are turning 90 degrees in one frame, thus for such a sharp turn, we turn the plane 6 degrees every frame, and continue this for 15 frames(for every turn), while still increasing/decreasing the ty, making the plane go forward or backward.
 - For landing, we use the tz to decrease the height till it is 5m(so that it does not go below the initial(starting) height)
+
+
+## References:
+- https://numpy.org/doc/stable/reference/generated/numpy.matmul.html
