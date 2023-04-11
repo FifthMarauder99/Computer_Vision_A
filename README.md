@@ -3,7 +3,7 @@
 # Part  1:  3d-to-2d
 
 ## Statement : 
-In this part, we try to control the first person view of the plane. We first take off the plane, then turn right, then travel a certain distance, then turn right again(U-turn in total), then travel the entire air strip , then turn right twice agai to be at the top of the air strip and land on the air strip.
+In this part, we try to control the first person view of the plane. We first take off the plane, then turn right, then travel a certain distance, then turn right again(U-turn in total), then travel the entire air strip , then turn right twice again to be at the top of the air strip and land on the air strip.
 
 ## Approach Explanation :
 We have an animate_above function in which we create the animation, we control all the movements of the plane that we want. We use the numpy library to do all the calculations (matrix multiplications) and then use the matplotlib library to actually display the animation by saving it as an mp4 file.
