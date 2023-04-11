@@ -1,4 +1,4 @@
--   by Balajee Devesha S (basrini)
+-   Contribution by Balajee Devesha S (basrini)
 
 # Objective
 
@@ -138,3 +138,56 @@ def _NeighbourNodeInputMessage(i_node,j_node,i_eval_label,NGraph):
     return MessageSum
 
 ```
+
+## Belief calculation
+
+-   All of the above functions comprise of a single iteration of the message propagation which is executed util convergence is observed or the max_iteration count is reached set to 150.
+
+-   Now we calculate the beliefs of each node based on the messages and the data cost of each node and assign the one with lower cost out of the 2 possible labels.
+
+```sh
+def _CalculateBelief(n,Message_store_final):
+    Label_mat = np.array([[""]*n for _ in range(n)]).astype(np.str_)
+    for x_coord in range(n):
+        for y_coord in range(n):
+            i_node = (x_coord,y_coord)
+            NodeRBelief = DataCost(i_node,"R",TotalBribes) + _NeighbourNodeBelief(i_node,"R",Message_store_final)
+            NodeDBelief = DataCost(i_node,"D",TotalBribes) + _NeighbourNodeBelief(i_node,"D",Message_store_final)
+            if NodeRBelief <=NodeDBelief:
+                Label_mat[i_node] = "R"
+            else:
+                Label_mat[i_node] = "D"
+    return Label_mat
+
+```
+
+-   Once either convergence or max iteration count is reached we calculate the planning cost using the present labelling and display the results as such.
+
+# Approaches considered
+
+-   Initially I tried uing the sum-product apporach but the execution time was very high tdue to tha large amount of multiplications and summations to be performed.
+
+-   Additionally, the Over and Underflow of the messages was very prominant and thus I chose to go with the min-sum approach. Th global minimum cost expected for the sample problem is 4500 with the following labelling,
+D D D D D
+D D D D D
+D D R D D
+D D D D D
+D D D D D
+
+however, currently the result bwing produced is suboptimal due to dicrepancy in normalization, message storing and access, we are trying to work on it and hoepfully by submission we are able to fix it.
+
+# Difficulties
+
+-   The main difficulty faced for this part is the apporach for Message handling, It is exceptionally difficult to trace back the message origin to a node as it already has 4 matrices for 4 directions with 2 sub values for each label.
+
+-   While writing the message we need to write onto the destination node while simultaneously considering the the neighbouring inputs for the i node excluding j node, for which we need to access i node's stored message which is counter intuitive to the approach by looking at the neighbour node.
+
+-   Similar issue is observed during the belief propagation as well leading to optimization issues due to such discrepancies.
+
+# Results
+
+The latest result from the code is:
+
+![Result](part2/CurRes.png)
+
+-   The accuracy is still far from the global minima however the approach and modularization allows us to debug the code relatively more straightforward manner and we are striving to update these until the last minute to be able to achieve the global minimum.
