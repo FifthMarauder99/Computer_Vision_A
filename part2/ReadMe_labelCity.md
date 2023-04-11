@@ -188,6 +188,6 @@ however, currently the result bwing produced is suboptimal due to dicrepancy in 
 
 The latest result from the code is:
 
-![Result](part2/CurRes.png)
+![Result](CurRes.png)
 
 -   The accuracy is still far from the global minima however the approach and modularization allows us to debug the code relatively more straightforward manner and we are striving to update these until the last minute to be able to achieve the global minimum.
