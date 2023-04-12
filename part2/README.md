@@ -165,7 +165,7 @@ def _CalculateBelief(n,Message_store_final):
             i_node = (x_coord,y_coord)
             NodeRBelief = DataCost(i_node,"R",TotalBribes) + _NeighbourNodeBelief(i_node,"R",Message_store_final)
             NodeDBelief = DataCost(i_node,"D",TotalBribes) + _NeighbourNodeBelief(i_node,"D",Message_store_final)
-            if NodeRBelief <=NodeDBelief:
+            if NodeRBelief < NodeDBelief:
                 Label_mat[i_node] = "R"
             else:
                 Label_mat[i_node] = "D"
