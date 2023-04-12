@@ -215,3 +215,11 @@ The latest result from the code is:
 ![Result](CurRes.png)
 
 -   The accuracy is still far from the global minima however the approach and modularization allows us to debug the code relatively more straightforward manner and we are striving to update these until the last minute to be able to achieve the global minimum.
+
+
+# Part 3: Inferring Depth from Stereo
+
+### Objectives:
+- Given two images, we can find the depth of the image using Naive Stereo and Markov Random Field algorithm. 
+- Produces 3D Stereoscopic Image
+
