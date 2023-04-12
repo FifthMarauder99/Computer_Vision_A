@@ -191,11 +191,12 @@ def _NeighbourNodeBelief(i_node,i_eval_label,Message_store_final):
 -   Initially I tried uing the sum-product apporach but the execution time was very high tdue to tha large amount of multiplications and summations to be performed.
 
 -   Additionally, the Over and Underflow of the messages was very prominant and thus I chose to go with the min-sum approach. Th global minimum cost expected for the sample problem is 4500 with the following labelling,
-D D D D D
-D D D D D
-D D R D D
-D D D D D
-D D D D D
+
+D D D D D,
+D D D D D,
+D D R D D,
+D D D D D,
+D D D D D,
 
 however, currently the result bwing produced is suboptimal due to dicrepancy in normalization, message storing and access, we are trying to work on it and hoepfully by submission we are able to fix it.
 
