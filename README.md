@@ -231,5 +231,25 @@ Before the learning process, we normalized the image by dividing each pixels wit
 ### Naive Stereo:
 This algorithm only utilize the disparity costs to find the index of 'D' where the minimum cost is located for every pixels. This index later will be converted into [0, 255] value as an image. To get the index, we have to make a slight adjustment. The principle of depth inference is to figure out the depth based on the shift distance of an object. If the object is close to the camera, it will have greater shift compared to the object that is located far from the camera. We utilize this concept for indexing when the disparity costs is stored in the matrix. The furthest shift should be located at the beginning (index 0) for left direction and at the end of matrix (index MAX_DISPARITY * 2 - 1) for the right direction. The origin (0 offset) is located at the index of MAX_DISPARITY - 1. After finding the index of minimum costs, we substract that index with the origin index (MAX_DISPARITY - 1) and take the absolute value.
 
+### MRF with Loopy Belief Propagation
+In MRF, there are some additional terms in the cost function. The transition cost and message cost from neighbors are introduced.
+Transition cost is the difference of disparity index whereas the message cost is calculated based on what the neighbors think
+of an i th pixel label should be from the previous iteration. Both transition and message cost is normalized for the next
+iteration to avoid the overflow and underflow problems. Similar to disparity cost, transition cost is calculated using
+truncated quadratic function. As we consider the message from the previous iteration, at the first iteration we initialize
+the message with 0. Afterwards, this message will be updated in every iteration. In the message passing process, in each
+iteration (let's say at time = t) every pixel calculate the total cost (disparity cost, transition cost, and message cost
+from their neighbors) and pass it to their neighbor in the right, left, up, and down direction. To sum up, here is the
+flow:
+
+    for i in range(max_iteration):
+        Every pixel calculate total cost and pass the message to the right direction
+        Calculate total cost and pass the message to the left direction
+        Calculate total cost and pass the message to the up direction
+        Calculate total cost and pass the message to the down direction
+    end
+
+
+
 ### Problem & Decision:
 From the given data, the training images do not require rectification as those left and right images are already taken in the same plane. This means that the camera is pointing the same direction and it only slides from the left to the right. Because of this, the object in the right image will be shifted to the left compared to the left image. Therefore, we can absoultely certain to tell the program that it only needs to check on the left direction starting from the same coordinate,from the left image that we want to check, with the number of slide of MAX_DISPARITY - 1. We have tried this approach and it gives better and faster result compared to searching in both direction (left and right). It is better because we force the model to only check to the left and ignore every pixels on the right and it is faster because it requires less iteration. However, it gives problem as this approach is not robust. If the 2 images are taken in different orientation, we need to rectify the image. This will cause local information can be shifted either to the left or to the right. As a final decision, we choose to check both direction for more robust model but with same trade-offs (slower and poorer result).
