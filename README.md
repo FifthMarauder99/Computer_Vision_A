@@ -45,27 +45,27 @@ below are a few images of the plane's movement.
 
 - Plane on the runway
 <p align="center">
-  <img src="/Users/maitreyakanitkar/Desktop/Coding&Misc/IU_Assignments/Computer vision/dbharton-apore-basrini-mkanitka-a2/Images/runway.png" width="300" height="300">
+  <img src="./Images/runway.png" width="300" height="300">
 </p>
 
 - Plane taking off
 <p align="center">
-  <img src="/Users/maitreyakanitkar/Desktop/Coding&Misc/IU_Assignments/Computer vision/dbharton-apore-basrini-mkanitka-a2/Images/takeoff.jpg" width="300" height="300">
+  <img src="./Images/takeoff.jpg" width="300" height="300">
 </p>
 
 - Plane flying parallel to the runway
 <p align="center">
-  <img src="/Users/maitreyakanitkar/Desktop/Coding&Misc/IU_Assignments/Computer vision/dbharton-apore-basrini-mkanitka-a2/Images/besiderunway.png" width="300" height="300">
+  <img src="./Images/besiderunway.png" width="300" height="300">
 </p>
 
 - Plane realigning with the runway for landing
 <p align="center">
-  <img src="/Users/maitreyakanitkar/Desktop/Coding&Misc/IU_Assignments/Computer vision/dbharton-apore-basrini-mkanitka-a2/Images/realign.png" width="300" height="300">
+  <img src="./Images/realign.png" width="300" height="300">
 </p>
 
 - Planing descending for landing
 <p align="center">
-  <img src="/Users/maitreyakanitkar/Desktop/Coding&Misc/IU_Assignments/Computer vision/dbharton-apore-basrini-mkanitka-a2/Images/descent.png" width="300" height="300">
+  <img src="./Images/descent.png" width="300" height="300">
 </p>
 
 ## References:
