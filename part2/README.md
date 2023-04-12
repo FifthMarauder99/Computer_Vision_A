@@ -1,4 +1,4 @@
-#Part 2: Understanding Markov Random Fields
+# Part 2: Understanding Markov Random Fields
 
 # Objective
 
