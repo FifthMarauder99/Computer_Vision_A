@@ -9,13 +9,64 @@ In this part, we try to control the first person view of the plane. We first tak
 We have an animate_above function in which we create the animation, we control all the movements of the plane that we want. We use the numpy library to do all the calculations (matrix multiplications) and then use the matplotlib library to actually display the animation by saving it as an mp4 file.
 - First, we read the airports.pts file and set the initial pose of the plane at height 5m, as the cockpit is about 5m above the ground.
 - The matrix transformations are defined by creating matrices for each transformation (focal matrix, compass matrix, tilt matrix, twist matrix, and translation T matrix) using Numpy. 
-- These matrices are then multiplied together in the correct order to obtain the final projection matrix. 
+- These matrices are then multiplied together in the correct order to obtain the final projection matrix. We multipled the matrices from inside out since when we tried other methods they weren't working as we wanted them to and this one worked.
+```sh
+projection = np.matmul(f_m, np.matmul(tl_m,np.matmul(tw_m,np.matmul(c_m,T_M))))
+```
 - The 3D point cloud of the airport is then multiplied by the projection matrix to obtain the 2D coordinates of the projected points.
 - This above matrix multiplication and the projection matrix creates a simulation in which the plane travels on the ground(air strip).
 - For all the next traversals, we need to vary the Translations, tx, ty and tz. One very easy way to do this is to vary the tx,ty and tz accordint to the current frame_number. This allows us to control the point to point position of the plane.
 - We use the compass variable to turn the plane right or left. The turn does not work if are turning 90 degrees in one frame, thus for such a sharp turn, we turn the plane 6 degrees every frame, and continue this for 15 frames(for every turn), while still increasing/decreasing the ty, making the plane go forward or backward.
 - For landing, we use the tz to decrease the height till it is 5m(so that it does not go below the initial(starting) height)
 
+To ensure that we dont make the coding complex which could lead to errors we decided to divide the code(where we would adjust the values of tx, ty, tz and compass) into different parts. The parts were as follows:-
+
+- Initially we see plane going down the runway where we were incrementing the value of ty.
+
+- Next we updated both ty and tz so that the plane takes off from the runway and into the sky.
+
+- Then we updated compass and ty so that the plane turns right and goes forward. Since this happens for every frame the turn is more gradual.
+
+- Then comes the part where we go forward for sometime. The idea behind this is not to fly over the runway but fly besides it.
+
+- This is followed by another right turn which puts us parallel to the runway and you can see the runway and the tower to the right side of the screen.
+
+- Then we take another right turn to become perpendicular to the runway.
+
+- Then we forward to compensate so as to come near to the runway. We are now only one right turn away from aligning with the runway.
+
+- Next up comes our last right turn which aligns us with the runway for landing.
+
+- Finally after a long journey we update tz to land the plane on the runway.
+
+Since we had no way of knowing the distance and time required for the steps taken we decided to use the concept of frames to our advantage. In the code you can clearly see that we have used the frame number to control the plane's direction. This way we can control the plane's movement and make it go in the direction we want.
+
+below are a few images of the plane's movement.
+
+- Plane on the runway
+<p align="center">
+  <img src="/Users/maitreyakanitkar/Desktop/Coding&Misc/IU_Assignments/Computer vision/dbharton-apore-basrini-mkanitka-a2/Images/runway.png" width="300" height="300">
+</p>
+
+- Plane taking off
+<p align="center">
+  <img src="/Users/maitreyakanitkar/Desktop/Coding&Misc/IU_Assignments/Computer vision/dbharton-apore-basrini-mkanitka-a2/Images/takeoff.jpg" width="300" height="300">
+</p>
+
+- Plane flying parallel to the runway
+<p align="center">
+  <img src="/Users/maitreyakanitkar/Desktop/Coding&Misc/IU_Assignments/Computer vision/dbharton-apore-basrini-mkanitka-a2/Images/besiderunway.png" width="300" height="300">
+</p>
+
+- Plane realigning with the runway for landing
+<p align="center">
+  <img src="/Users/maitreyakanitkar/Desktop/Coding&Misc/IU_Assignments/Computer vision/dbharton-apore-basrini-mkanitka-a2/Images/realign.png" width="300" height="300">
+</p>
+
+- Planing descending for landing
+<p align="center">
+  <img src="/Users/maitreyakanitkar/Desktop/Coding&Misc/IU_Assignments/Computer vision/dbharton-apore-basrini-mkanitka-a2/Images/descent.png" width="300" height="300">
+</p>
 
 ## References:
 - https://numpy.org/doc/stable/reference/generated/numpy.matmul.html
