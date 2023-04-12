@@ -341,7 +341,8 @@ also applied as in Naive Stereo where the index is substracted with (MAX_DISPARI
 ### 3D Stereoscopic Image
 As an additional task, we also produce the 3D red-cyan image. The idea is quite simple since the two images are already
 given to use. We take the red value of the left image to create red image and merge it with the right image where we use
-the green and blue value to generate cyan image.
+the green and blue value to generate cyan image. To generate how close or far the 3D image looks, one of the image should be added an offset. The illustration is shown in below: (picture from https://www.ncl.ac.uk/media/wwwnclacuk/pressoffice/files/pressreleaseslegacy/Basic_Principles_of_Stereoscopic_3D_v1.pdf)
+
 
 ### Problem & Decision:
 From the given data, the training images do not require rectification as those left and right images are already taken in the same plane. This means that the camera is pointing the same direction and it only slides from the left to the right. Because of this, the object in the right image will be shifted to the left compared to the left image. Therefore, we can absoultely certain to tell the program that it only needs to check on the left direction starting from the same coordinate,from the left image that we want to check, with the number of slide of MAX_DISPARITY - 1. We have tried this approach and it gives better and faster result compared to searching in both direction (left and right). It is better because we force the model to only check to the left and ignore every pixels on the right and it is faster because it requires less iteration. However, it gives problem as this approach is not robust. If the 2 images are taken in different orientation, we need to rectify the image. This will cause local information can be shifted either to the left or to the right. As a final decision, we choose to check both direction for more robust model but with same trade-offs (slower and poorer result).
