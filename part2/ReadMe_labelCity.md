@@ -1,3 +1,5 @@
+#Part 2: Understanding Markov Random Fields
+
 # Objective
 
 -   In this part we are expected to implement a min-sum loopy belief propagation for the problem of town planning by assigning the houses an affliliation of "R" or "D"
