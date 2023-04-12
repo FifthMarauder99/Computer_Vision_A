@@ -209,7 +209,7 @@ however, currently the result bwing produced is suboptimal due to dicrepancy in 
 
 # Results
 
--   The latest result from the code is if normalization is 
+-   The latest result from the code without normalization is 
 
 ![Result1](CurRes2.png)
 
