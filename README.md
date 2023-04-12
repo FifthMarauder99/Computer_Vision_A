@@ -223,3 +223,7 @@ The latest result from the code is:
 - Given two images, we can find the depth of the image using Naive Stereo and Markov Random Field algorithm. 
 - Produces 3D Stereoscopic Image
 
+### Disparity Costs:
+Since we are assuming that the images have been already rectified, we can match pixels from the left image to the right image's pixels which is located within the scanline in the same row as left pixels that we are looking. Ideally, we check the whole pixels to attain which pixel that has the best match. However, it is computationally expensive esepecially if we have high resolution images. Therefore, the span of area that the model will search is limitized by MAX_DISPARITY. Let's say if we set MAX_DISPARITY is equal to 10, it means that we search the area start from the same coordiante as the left pixel, scan 9 pixels to the left, and other 9 pixels to the right. Every slide, the disparity costs is calculated and stored in a matrix with a shape of (H,W,D) where H is the height of image, W is the width, and D is the number of location within the scanline in the right image that we checked. In this case, D is equal to MAX_DISPARITY * 2 - 1.
+
+sdfsd
