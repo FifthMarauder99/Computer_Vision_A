@@ -41,7 +41,7 @@ To ensure that we dont make the coding complex which could lead to errors we dec
 
 Since we had no way of knowing the distance and time required for the steps taken we decided to use the concept of frames to our advantage. In the code you can clearly see that we have used the frame number to control the plane's direction. This way we can control the plane's movement and make it go in the direction we want.
 
-below are a few images of the plane's movement.
+Pasted below are a few images of the plane's movement.
 
 - Plane on the runway
 <p align="center">
