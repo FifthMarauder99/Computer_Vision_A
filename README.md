@@ -311,3 +311,10 @@ the green and blue value to generate cyan image.
 
 ### Problem & Decision:
 From the given data, the training images do not require rectification as those left and right images are already taken in the same plane. This means that the camera is pointing the same direction and it only slides from the left to the right. Because of this, the object in the right image will be shifted to the left compared to the left image. Therefore, we can absoultely certain to tell the program that it only needs to check on the left direction starting from the same coordinate,from the left image that we want to check, with the number of slide of MAX_DISPARITY - 1. We have tried this approach and it gives better and faster result compared to searching in both direction (left and right). It is better because we force the model to only check to the left and ignore every pixels on the right and it is faster because it requires less iteration. However, it gives problem as this approach is not robust. If the 2 images are taken in different orientation, we need to rectify the image. This will cause local information can be shifted either to the left or to the right. As a final decision, we choose to check both direction for more robust model but with same trade-offs (slower and poorer result).
+
+
+## Contributions:
+- apore worked on Part 1
+- basrini worked on part 2
+- dbharton worked on part 3
+- mkanitka helped on both part 1 and 3
