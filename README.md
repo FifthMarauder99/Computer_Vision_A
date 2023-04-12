@@ -351,4 +351,4 @@ From the given data, the training images do not require rectification as those l
 - apore worked on Part 1
 - basrini worked on part 2
 - dbharton worked on part 3
-- mkanitka helped on both part 1 and 3
+- mkanitka worked on part 1 and helped on part 3
